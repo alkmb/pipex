@@ -6,7 +6,7 @@
 #    By: akambou <akambou@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/11/09 15:43:23 by akambou           #+#    #+#              #
-#    Updated: 2023/11/09 23:13:09 by akambou          ###   ########.fr        #
+#    Updated: 2023/11/11 12:48:39 by akambou          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,7 +14,7 @@ NAME = pipex
 
 CC = gcc
 
-CFLAGS = -Werror -Wall -Wextra -fsanitize=address
+CFLAGS =  -Wall -Wextra -fsanitize=address
 
 RM = rm -rf
 

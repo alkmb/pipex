@@ -6,7 +6,7 @@
 #    By: akambou <akambou@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/09/11 22:13:50 by akambou           #+#    #+#              #
-#    Updated: 2023/11/09 16:19:18 by akambou          ###   ########.fr        #
+#    Updated: 2023/11/11 12:49:03 by akambou          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,7 +14,7 @@ NAME = libft.a
 
 CC = cc
 
-CFLAGS = -Wall -Wextra -Werror -I $(INCL)
+CFLAGS = -Wall -Wextra -I $(INCL)
 
 INCL = libft.h
 

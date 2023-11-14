@@ -1,28 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils.c                                            :+:      :+:    :+:   */
+/*   utils_bonus.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: akambou <akambou@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/29 18:34:48 by akambou           #+#    #+#             */
-/*   Updated: 2023/11/14 08:31:42 by akambou          ###   ########.fr       */
+/*   Created: 2023/11/14 07:43:06 by akambou           #+#    #+#             */
+/*   Updated: 2023/11/14 08:31:57 by akambou          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/pipex.h"
-
-void	exec_cmd_bns(char **cmd, char **envp)
-{
-	char	*path;
-
-	path = get_path(cmd[0], envp);
-	if (execve(path, cmd, envp) == -1)
-	{
-		ft_putstr_fd ("Command not found.\n", 2);
-		exit(0);
-	}
-}
 
 char	*get_envp(char *n_envp, char **envp)
 {
@@ -72,4 +60,49 @@ char	*get_path(char *cmd, char **envp)
 	free(all_path);
 	free(all_cmd);
 	return (cmd);
+}
+
+void	handle_input_redirection(int in, char **argv)
+{
+	int	fd;
+
+	if (in)
+	{
+		fd = open(argv[1], O_RDONLY);
+		dup2(fd, 0);
+		close(fd);
+	}
+}
+
+void	handle_output_redirection(int *end, int out, char **argv)
+{
+	int	fd;
+
+	if (out)
+	{
+		dup2(end[1], 1);
+		close(end[1]);
+	}
+	else
+	{
+		fd = open(argv[4], O_WRONLY | O_CREAT | O_TRUNC, 0644);
+		dup2(fd, 1);
+		close(fd);
+		dup2(end[0], 0);
+		close(end[0]);
+	}
+}
+
+void	exec_pipe(int *end, char **argv, int in_out, char **envp)
+{
+	int		in;
+	int		out;
+	char	**all_cmd;
+
+	in = in_out & 1;
+	out = in_out >> 1;
+	all_cmd = ft_split(argv[2], ' ');
+	handle_input_redirection(in, argv);
+	handle_output_redirection(end, out, argv);
+	exec_cmd_bns(all_cmd, envp);
 }
