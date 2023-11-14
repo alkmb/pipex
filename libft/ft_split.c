@@ -6,7 +6,7 @@
 /*   By: alkmb <alkmb@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 04:32:24 by akambou           #+#    #+#             */
-/*   Updated: 2023/09/21 02:34:27 by alkmb            ###   ########.fr       */
+/*   Updated: 2023/11/14 09:13:15 by akambou          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,9 +87,7 @@ char	**ft_split(char const *s, char c)
 {
 	char	**w_arr;
 	size_t	n_wrd;
-	size_t	i;
 
-	i = 0;
 	w_arr = malloc((word_count(s, c) + 1) * sizeof(char *));
 	if (!w_arr)
 		return (NULL);

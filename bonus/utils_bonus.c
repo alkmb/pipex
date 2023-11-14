@@ -6,7 +6,7 @@
 /*   By: akambou <akambou@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/14 07:43:06 by akambou           #+#    #+#             */
-/*   Updated: 2023/11/14 08:31:57 by akambou          ###   ########.fr       */
+/*   Updated: 2023/11/14 11:10:37 by akambou          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,16 +93,3 @@ void	handle_output_redirection(int *end, int out, char **argv)
 	}
 }
 
-void	exec_pipe(int *end, char **argv, int in_out, char **envp)
-{
-	int		in;
-	int		out;
-	char	**all_cmd;
-
-	in = in_out & 1;
-	out = in_out >> 1;
-	all_cmd = ft_split(argv[2], ' ');
-	handle_input_redirection(in, argv);
-	handle_output_redirection(end, out, argv);
-	exec_cmd_bns(all_cmd, envp);
-}

@@ -1,14 +1,15 @@
 /* ************************************************************************** */
-/*			*/
-/*		:::	  ::::::::   */
+/*				*/
+/*					:::	  ::::::::   */
 /*   pipex_bonus.c			  :+:	  :+:	:+:   */
-/*			+:+ +:+		 +:+	 */
+/*				+:+ +:+		 +:+	 */
 /*   By: akambou <akambou@student.42.fr>			+#+  +:+	   +#+		*/
-/*		+#+#+#+#+#+   +#+		   */
-/*   Created: 2023/11/14 08:16:33 by akambou		   #+#	#+#			 */
-/*   Updated: 2023/11/14 08:23:42 by akambou		  ###   ########.fr	   */
-/*			*/
+/*			+#+#+#+#+#+   +#+		   */
+/*   Created: 2023/11/14 08:39:56 by akambou		   #+#	#+#			 */
+/*   Updated: 2023/11/14 10:57:21 by akambou		  ###   ########.fr	   */
+/*				*/
 /* ************************************************************************** */
+
 
 #include "../includes/pipex.h"
 
@@ -50,12 +51,11 @@ void	wait_for_child_processes(pid_t *pid, int count)
 int	main(int argc, char **argv, char **envp)
 {
 	int		end[2];
-	pid_t	pid;
+	pid_t	pid[argc - 3];
 	int		i;
 	int		in_out;
 
 	i = 2;
-	pid = malloc(sizeof(pid_t) * (argc - 3));
 	while (i < argc - 1)
 	{
 		create_pipe(end);
