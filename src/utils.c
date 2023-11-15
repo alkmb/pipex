@@ -6,18 +6,20 @@
 /*   By: akambou <akambou@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/29 18:34:48 by akambou           #+#    #+#             */
-/*   Updated: 2023/11/14 08:31:42 by akambou          ###   ########.fr       */
+/*   Updated: 2023/11/15 09:22:33 by akambou          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/pipex.h"
 
-void	exec_cmd_bns(char **cmd, char **envp)
+void	exec_cmd(char *cmd, char **envp)
 {
 	char	*path;
+	char	**all_cmd;
 
-	path = get_path(cmd[0], envp);
-	if (execve(path, cmd, envp) == -1)
+	all_cmd = ft_split(cmd, ' ');
+	path = get_path(cmd, envp);
+	if (execve(path, all_cmd, envp) == -1)
 	{
 		ft_putstr_fd ("Command not found.\n", 2);
 		exit(0);

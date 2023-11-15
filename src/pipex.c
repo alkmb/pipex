@@ -5,72 +5,79 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: akambou <akambou@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/11/11 13:01:54 by akambou           #+#    #+#             */
-/*   Updated: 2023/11/14 08:32:26 by akambou          ###   ########.fr       */
+/*   Created: 2023/11/15 09:23:05 by akambou           #+#    #+#             */
+/*   Updated: 2023/11/15 09:23:06 by akambou          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+
 #include "../includes/pipex.h"
 
-void	exec_cmd(char *cmd, char **envp)
-{
-	char	*path;
-	char	**all_cmd;
-
-	all_cmd = ft_split(cmd, ' ');
-	path = get_path(cmd, envp);
-	if (execve(path, all_cmd, envp) == -1)
-	{
-		ft_putstr_fd ("Command not found.\n", 2);
-		exit(0);
-	}
-}
-
-void	child_proces(int *end, char **argv, char **envp)
+void	execute_first_command(int *fd, char **argv, char **envp)
 {
 	int	fd1;
 
-	fd1 = open (argv[1], O_RDONLY);
-	dup2 (fd1, 0);
-	dup2 (end[1], 1);
-	close (end[0]);
-	close (end[1]);
-	exec_cmd (argv[2], envp);
-	perror ("Error");
+	fd1 = open(argv[FILE1], O_RDONLY);
+	if (fd1 < 0)
+	{
+		perror("Error opening input file");
+		exit(EXIT_FAILURE);
+	}
+	dup2(fd1, 0);
+	close(fd1);
+
+	dup2(fd[WRITE_END], 1);
+	close(fd[READ_END]);
+	close(fd[WRITE_END]);
+
+	exec_cmd(argv[CMD1], envp);
+	perror("Error executing first command");
+	exit(EXIT_FAILURE);
 }
 
-void	parent_proces(int *end, char **argv, char **envp)
+void	execute_second_command(int *fd, char **argv, char **envp)
 {
 	int	fd2;
 
-	fd2 = open(argv[4], O_WRONLY | O_CREAT | O_TRUNC, 0644);
+	fd2 = open(argv[FILE2], O_WRONLY | O_CREAT | O_TRUNC, 0644);
+	if (fd2 < 0)
+	{
+		perror("Error opening output file");
+		exit(EXIT_FAILURE);
+	}
 	dup2(fd2, 1);
-	dup2(end[0], 0);
-	close(end[0]);
-	close(end[1]);
-	exec_cmd(argv[3], envp);
-	perror("Error");
+	close(fd2);
+
+	dup2(fd[READ_END], 0);
+	close(fd[READ_END]);
+	close(fd[WRITE_END]);
+
+	exec_cmd(argv[CMD2], envp);
+	perror("Error executing second command");
+	exit(EXIT_FAILURE);
 }
 
 int	main(int argc, char **argv, char **envp)
 {
-	int		end[2];
+	int		fd[2];
 	pid_t	pid;
 
 	if (argc != 5)
 	{
-		ft_putstr_fd ("./pipex file1 cmd1 cmd2 file2\n", 2);
-		exit (0);
+		ft_putstr_fd ("Usage: ./pipex file1 cmd1 cmd2 file2\n", 2);
+		exit(EXIT_FAILURE);
 	}
-	if (pipe(end) == -1)
-		exit (-1);
+	if (pipe(fd) == -1)
+	{
+		perror("Error creating pipe");
+		exit(EXIT_FAILURE);
+	}
 	pid = fork();
 	if (pid == 0)
-		child_proces (end, argv, envp);
+		execute_first_command(fd, argv, envp);
 	else
 	{
-		wait (NULL);
-		parent_proces (end, argv, envp);
+		wait(NULL);
+		execute_second_command(fd, argv, envp);
 	}
-	return (0);
 }
