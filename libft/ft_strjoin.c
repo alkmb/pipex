@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strjoin.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alkmb <alkmb@student.42.fr>                +#+  +:+       +#+        */
+/*   By: akambou <akambou@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/11 22:17:41 by akambou           #+#    #+#             */
-/*   Updated: 2023/09/20 15:23:32 by alkmb            ###   ########.fr       */
+/*   Updated: 2023/11/15 16:16:10 by akambou          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,13 +17,13 @@ char	*ft_strjoin(char const *s1, char const *s2)
 {
 	char	*totalstring;
 	int		size1;
-	int		size2;
 	int		i;
 
+	if (s1 == NULL || s2 == NULL)
+		return (NULL);
 	size1 = ft_strlen(s1);
-	size2 = ft_strlen(s2);
 	i = 0;
-	totalstring = (char *)malloc((size1 + size2 + 1) * sizeof(char));
+	totalstring = (char *)malloc((size1 + ft_strlen(s2) + 1) * sizeof(char));
 	if (!totalstring)
 		return (NULL);
 	size1 = 0;
@@ -40,15 +40,3 @@ char	*ft_strjoin(char const *s1, char const *s2)
 	totalstring[size1 + i] = '\0';
 	return (totalstring);
 }
-/*
-int	main(void)
-{
-	char	*str1;
-	char	*str2;
-	char	*result;
-
-	str1 = "Hello world boy.";
-	str2 = "and fuck you.";
-	result = ft_strjoin(str1, str2);
-	printf ("This are the both strings joined: %s", result);
-}*/

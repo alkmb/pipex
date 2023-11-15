@@ -6,26 +6,28 @@
 #    By: akambou <akambou@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/11/14 11:01:39 by akambou           #+#    #+#              #
-#    Updated: 2023/11/14 11:06:09 by akambou          ###   ########.fr        #
+#    Updated: 2023/11/15 16:13:58 by akambou          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = pipex
-BONUS_NAME = pipex_bonus
+BONUS_NAME = pipexb
 
 CC = gcc
 
-CFLAGS =  -Wall -fsanitize=address
+CFLAGS =  -Wall -fsanitize=address -I includes
 
 RM = rm -rf
 
 SRCS = 	src/pipex.c\
+		includes/pipex.h\
 		src/utils.c\
 		libft/libft.a\
 
-BONUS_SRCS = bonus/pipex_bonus.c\
-				bonus/utils_bonus.c\
-				libft/libft.a\
+BONUS_SRCS = bonus/src/pipex_bonus.c\
+			bonus/src/utils_bonus.c\
+			bonus/includes/pipex_bonus.h\
+			libft/libft.a\
 
 $(NAME) :
 	@make all -C libft
