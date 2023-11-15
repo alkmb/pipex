@@ -6,7 +6,7 @@
 /*   By: akambou <akambou@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/15 09:49:55 by akambou           #+#    #+#             */
-/*   Updated: 2023/11/15 16:41:21 by akambou          ###   ########.fr       */
+/*   Updated: 2023/11/15 17:09:25 by akambou          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,15 +32,14 @@ void	execute_first_command(int *fd, char **argv, char **envp)
 	exit(EXIT_FAILURE);
 }
 
-void	execute_mid_command(int *fd_old, int *fd_new, int i, \
-char **argv, char **envp)
+void	execute_mid_command(int *fd_old, int *fd_new, char *argv, char **envp)
 {
 	dup2(fd_old[READ_END], 0);
 	close(fd_old[READ_END]);
 	dup2(fd_new[WRITE_END], 1);
 	close(fd_new[WRITE_END]);
-	exec_cmd(argv[i], envp);
-	perror("Error executing second command");
+	exec_cmd(argv, envp);
+	perror("Error executing middle command");
 	exit(EXIT_FAILURE);
 }
 
@@ -66,11 +65,8 @@ void	execute_last_command(int *fd_old, int argc, char **argv, char **envp)
 
 void	parent_proces(int *fd_old, char **argv, char **envp, int argc)
 {
-	int		i;
 	pid_t	pid;
-	int		fd_new[2];
 
-	i = 2;
 	if (pipe(fd_old) == -1)
 	{
 		perror("Error creating pipe");
@@ -83,27 +79,7 @@ void	parent_proces(int *fd_old, char **argv, char **envp, int argc)
 	{
 		wait(NULL);
 		close(fd_old[WRITE_END]);
-		while (i < argc - 1)
-		{
-			if (pipe(fd_new) == -1)
-			{
-				perror("Error creating pipe");
-				exit(EXIT_FAILURE);
-			}
-
-			pid = fork();
-			if (pid == 0)
-				execute_mid_command(fd_old, fd_new, i, argv, envp);
-			else
-			{
-				wait(NULL);
-				close(fd_new[WRITE_END]);
-				close(fd_old[READ_END]);
-				fd_old[READ_END] = fd_new[READ_END];
-				i++;
-			}
-		}
-		execute_last_command(fd_old, argc, argv, envp);
+		chose_command(fd_old, argc, argv, envp);
 	}
 }
 

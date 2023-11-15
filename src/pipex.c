@@ -6,10 +6,9 @@
 /*   By: akambou <akambou@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/15 09:23:05 by akambou           #+#    #+#             */
-/*   Updated: 2023/11/15 09:23:06 by akambou          ###   ########.fr       */
+/*   Updated: 2023/11/15 17:11:08 by akambou          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 
 #include "../includes/pipex.h"
 
@@ -25,11 +24,9 @@ void	execute_first_command(int *fd, char **argv, char **envp)
 	}
 	dup2(fd1, 0);
 	close(fd1);
-
 	dup2(fd[WRITE_END], 1);
 	close(fd[READ_END]);
 	close(fd[WRITE_END]);
-
 	exec_cmd(argv[CMD1], envp);
 	perror("Error executing first command");
 	exit(EXIT_FAILURE);
@@ -47,11 +44,9 @@ void	execute_second_command(int *fd, char **argv, char **envp)
 	}
 	dup2(fd2, 1);
 	close(fd2);
-
 	dup2(fd[READ_END], 0);
 	close(fd[READ_END]);
 	close(fd[WRITE_END]);
-
 	exec_cmd(argv[CMD2], envp);
 	perror("Error executing second command");
 	exit(EXIT_FAILURE);

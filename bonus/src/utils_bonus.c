@@ -6,13 +6,13 @@
 /*   By: akambou <akambou@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/15 16:46:46 by akambou           #+#    #+#             */
-/*   Updated: 2023/11/15 16:46:48 by akambou          ###   ########.fr       */
+/*   Updated: 2023/11/15 17:10:28 by akambou          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/pipex_bonus.h"
 
-void free_split(char **split)
+void	free_split(char **split)
 {
 	char	**original_split;
 
@@ -23,6 +23,35 @@ void free_split(char **split)
 		split++;
 	}
 	free(original_split);
+}
+
+void	chose_command(int *fd_old, int argc, char **argv, char **envp)
+{
+	int		i;
+	pid_t	pid;
+	int		fd_new[2];
+
+	i = 2;
+	while (i < argc - 1)
+	{
+		if (pipe(fd_new) == -1)
+		{
+			perror("Error creating pipe");
+			exit(EXIT_FAILURE);
+		}
+		pid = fork();
+		if (pid == 0)
+			execute_mid_command(fd_old, fd_new, argv[i], envp);
+		else
+		{
+			wait(NULL);
+			close(fd_new[WRITE_END]);
+			close(fd_old[READ_END]);
+			fd_old[READ_END] = fd_new[READ_END];
+			i++;
+		}
+	}
+	execute_last_command(fd_old, argc, argv, envp);
 }
 
 void	exec_cmd(char *cmd, char **envp)
@@ -62,7 +91,6 @@ char	*get_envp(char *n_envp, char **envp)
 			result = envp[i] + j + 1;
 			free(envp_path);
 			return (result);
-
 		}
 		free(envp_path);
 		i++;

@@ -6,7 +6,7 @@
 /*   By: akambou <akambou@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/15 10:42:00 by akambou           #+#    #+#             */
-/*   Updated: 2023/11/15 15:44:40 by akambou          ###   ########.fr       */
+/*   Updated: 2023/11/15 17:07:33 by akambou          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,9 @@
 
 void	execute_first_command(int *fd, char **argv, char **envp);
 void	execute_second_command(int *fd, char **argv, char **envp);
+void	execute_mid_command(int *fd_old, int *fd_new, char *argv, char **envp);
+void	execute_last_command(int *fd_old, int argc, char **argv, char **envp);
+void	chose_command(int *fd_old, int argc, char **argv, char **envp);
 void	exec_cmd(char *cmd, char **envp);
 void	free_array(char **array);
 char	*get_path(char *cmd, char **envp);
