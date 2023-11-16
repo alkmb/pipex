@@ -6,59 +6,53 @@
 #    By: akambou <akambou@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/11/14 11:01:39 by akambou           #+#    #+#              #
-#    Updated: 2023/11/15 16:13:58 by akambou          ###   ########.fr        #
+#    Updated: 2023/11/16 23:25:45 by akambou          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-NAME = pipex
-BONUS_NAME = pipexb
 
 CC = gcc
-
-CFLAGS =  -Wall -fsanitize=address -I includes
-
+CFLAGS = -Wall -Wextra -Werror -fsanitize=address -I includes
 RM = rm -rf
 
-SRCS = 	src/pipex.c\
-		includes/pipex.h\
-		src/utils.c\
-		libft/libft.a\
+SRCS = src/pipex.c src/utils.c
+OBJS = ${SRCS:.c=.o}
+NAME = pipex
+HEADER = includes/pipex.h
 
-BONUS_SRCS = bonus/src/pipex_bonus.c\
-			bonus/src/utils_bonus.c\
-			bonus/includes/pipex_bonus.h\
-			libft/libft.a\
+BONUS_SRCS = bonus/src/pipex_bonus.c bonus/src/utils_bonus.c
+OBJSBONUS = ${BONUS_SRCS:.c=.o}
+BONUS_NAME = pipex_bonus
 
-$(NAME) :
-	@make all -C libft
+all: $(NAME)
+
+$(NAME): $(OBJS) $(HEADER) Makefile
+	@make -C libft
 	@echo "🔨 Building $(NAME)..."
-	@$(CC) $(CFLAGS) $(SRCS) -o $(NAME)
+	@$(CC) $(CFLAGS) $(OBJS) libft/libft.a -o $(NAME)
 	@echo "✅ Done building $(NAME)!"
 
-$(BONUS_NAME) :
-	@make all -C libft
+$(BONUS_NAME): $(OBJSBONUS) $(HEADER) Makefile
 	@echo "🔨 Building $(BONUS_NAME)..."
-	@$(CC) $(CFLAGS) $(BONUS_SRCS) -o $(BONUS_NAME)
+	@$(CC) $(CFLAGS) $(OBJSBONUS) libft/libft.a -o $(BONUS_NAME)
 	@echo "✅ Done building $(BONUS_NAME)!"
 
-all : $(NAME)
+bonus: $(BONUS_NAME)
 
-bonus : $(BONUS_NAME)
-
-fclean : clean
+fclean: clean
 	@echo "🧹 Cleaning up executables..."
 	@$(RM) $(NAME) $(BONUS_NAME)
 	@make fclean -C libft
 	@echo "✅ Done cleaning up executables!"
 
-clean :
+clean:
 	@echo "🧹 Cleaning up..."
-	@$(RM) $(NAME) $(BONUS_NAME)
+	@$(RM) $(OBJS) $(OBJSBONUS)
 	@make clean -C libft
 	@echo "✅ Done cleaning up!"
 
-re : fclean all
+re: fclean all
 
-rebonus : fclean bonus
+rebonus: fclean bonus
 
 .PHONY: all clean fclean re bonus rebonus

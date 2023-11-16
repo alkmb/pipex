@@ -6,7 +6,7 @@
 /*   By: akambou <akambou@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/15 16:46:46 by akambou           #+#    #+#             */
-/*   Updated: 2023/11/15 17:10:28 by akambou          ###   ########.fr       */
+/*   Updated: 2023/11/16 22:31:26 by akambou          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ void	exec_cmd(char *cmd, char **envp)
 	if (execve(path, all_cmd, envp) == -1)
 	{
 		ft_putstr_fd ("Command not found.\n", 2);
-		exit(0);
+		exit(EXIT_FAILURE);
 	}
 	free_split(original_cmd);
 	free(path);
