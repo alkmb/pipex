@@ -6,56 +6,45 @@
 #    By: akambou <akambou@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/11/14 09:50:01 by akambou           #+#    #+#              #
+<<<<<<< HEAD
 #    Updated: 2023/11/16 20:54:51 by akambou          ###   ########.fr        #
+=======
+#    Updated: 2023/11/23 01:10:31 by akambou          ###   ########.fr        #
+>>>>>>> c43a1ed (UPDATED)
 #                                                                              #
 # **************************************************************************** #
 
 NAME = libft.a
 
-CC = cc
+CC = gcc
+RM = rm -rf
 
 CFLAGS = -Wall -Wextra -Werror -o$(INCL)
 
-INCL = libft.h
-
-SRCS = $(wildcard *.c)
-BONUS = $(wildcard *_bonus.c)
-
+INCL = includes/libft.h
 OBJ_DIR = obj/
-OBJ = $(addprefix $(OBJ_DIR), $(SRCS:.c=.o))
-OBJ_BONUS = $(addprefix $(OBJ_DIR), $(BONUS:.c=.o))
+OBJS = $(SRCS:%.c=$(OBJ_DIR)%.o)
+SRCS = $(wildcard src/alloc/*.c src/chars/*.c src/lists/*.c \
+src/memory/*.c src/numbers/*.c src/strings/*.c src/files/*.c)
+
+$(OBJ_DIR)%.o: %.c
+	@mkdir -p $(@D)
+	@printf "\033[0;33m\rCompiling -> $< ✅                        \033[0m"
+	@$(CC) $(CFLAGS) -c $< -o $@
 
 all: $(NAME)
 
-$(NAME): $(OBJ)
-	@echo "Creating library 🔨"
-	@ar rcs $(NAME) $(OBJ) > /dev/null
-	@ranlib $(NAME) > /dev/null
-	@echo "Library created✅."
-
-bonus: $(OBJ_BONUS)
-	@echo "Creating bonus library 🔨"
-	@ar rcs $(NAME) $(OBJ_BONUS) > /dev/null
-	@ranlib $(NAME) > /dev/null
-	@touch $@
-	@echo "Bonus library created✅."
-
-$(OBJ_DIR)%.o : %.c Makefile $(INCL)
-	@mkdir -p $(OBJ_DIR)
-	@echo "Compiling $< 🔨"
-	@$(CC) $(CFLAGS) -c $< -o $@ > /dev/null
-	@echo "Compiled $<✅."
+$(NAME): $(OBJS)
+	@ar rcs $(NAME) $(OBJS)
+	@echo -e "\033[0;32mLibft created 📚\033[0m"
 
 clean:
-	@echo "Cleaning object files 🔨"
-	@rm -rf $(OBJ_DIR) > /dev/null
-	@echo "Cleaned object files✅."
+	@$(RM) $(OBJ) $(OBJ_DIR)
+	@echo -e "\033[0;31mCleaned objects libft 🧹\033[0m"
 
 fclean: clean
-	@echo "Cleaning library 🔨"
-	@rm -rf $(NAME) > /dev/null
-	@echo "Cleaned library✅."
-
+	@$(RM) $(NAME) $(OBJ_DIR) $(OBJ)
+	@echo -e "\033[0;31mCleaned libft 🧹\033[0m"
 re: fclean all
 
 .PHONY: all clean fclean re
