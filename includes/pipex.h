@@ -6,7 +6,7 @@
 /*   By: akambou <akambou@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/09 11:26:01 by akambou           #+#    #+#             */
-/*   Updated: 2023/11/23 00:44:19 by akambou          ###   ########.fr       */
+/*   Updated: 2023/11/15 08:54:49 by akambou          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@
 # define CMD2 3
 # define FILE2 4
 
-# include "../libft/includes/libft.h"
+# include "../libft/libft.h"
 # include <unistd.h>
 # include <stddef.h>
 # include <stdlib.h>

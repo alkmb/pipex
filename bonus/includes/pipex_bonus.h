@@ -6,7 +6,7 @@
 /*   By: akambou <akambou@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/15 10:42:00 by akambou           #+#    #+#             */
-/*   Updated: 2023/11/23 01:08:20 by akambou          ###   ########.fr       */
+/*   Updated: 2023/11/15 17:07:33 by akambou          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,11 @@
 # define CMD2 3
 # define FILE2 4
 
-# include "../../libft/includes/libft.h"
+# include "../libft/libft.h"
+# include <unistd.h>
+# include <stddef.h>
+# include <stdlib.h>
+# include <fcntl.h>
 # include <sys/types.h>
 # include <sys/wait.h>
 # include <stdio.h>
