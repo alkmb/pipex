@@ -6,7 +6,7 @@
 #    By: akambou <akambou@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/11/14 09:50:01 by akambou           #+#    #+#              #
-#    Updated: 2023/11/16 20:54:51 by akambou          ###   ########.fr        #
+#    Updated: 2023/11/17 16:04:45 by akambou          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,7 +21,6 @@ INCL = libft.h
 SRCS = $(wildcard *.c)
 BONUS = $(wildcard *_bonus.c)
 
-OBJ_DIR = obj/
 OBJ = $(addprefix $(OBJ_DIR), $(SRCS:.c=.o))
 OBJ_BONUS = $(addprefix $(OBJ_DIR), $(BONUS:.c=.o))
 
@@ -41,14 +40,13 @@ bonus: $(OBJ_BONUS)
 	@echo "Bonus library created✅."
 
 $(OBJ_DIR)%.o : %.c Makefile $(INCL)
-	@mkdir -p $(OBJ_DIR)
 	@echo "Compiling $< 🔨"
 	@$(CC) $(CFLAGS) -c $< -o $@ > /dev/null
 	@echo "Compiled $<✅."
 
 clean:
 	@echo "Cleaning object files 🔨"
-	@rm -rf $(OBJ_DIR) > /dev/null
+	@rm -rf $(OBJ) > /dev/null
 	@echo "Cleaned object files✅."
 
 fclean: clean
